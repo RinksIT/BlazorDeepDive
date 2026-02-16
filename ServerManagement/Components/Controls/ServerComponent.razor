@@ -1,7 +1,22 @@
-﻿<div data-name="@server.Name" style="color:@(server.IsOnline? "green":"red")">
-    @server.Name is @(server.IsOnline == true ? "online" : "offline") from the city @server.City
-</div>
+﻿@if (server != null)
+{
+    <div data-name="@server.Name" style="color:@(server.IsOnline ? "green" : "red")">
+
+        @server.Name is @(server.IsOnline == true ? "online" : "offline") from the city @server.City
+        &nbsp;
+        <button type="button" class="btn btn-primary" @onclick="ChangeStatus">Turn on/off</button>
+
+    </div>
+}
 
 @code {
-    private Server server = new Server() { Name = "Server 1", City = "Toronto" };
+    [SupplyParameterFromForm]
+    private Server? server { get; set; } = new Server { Name = "Server 1", City = "Toronto" };
+
+
+    private void ChangeStatus()
+    {
+        if (server != null)
+            this.server.IsOnline = !this.server.IsOnline;
+    }
 }
